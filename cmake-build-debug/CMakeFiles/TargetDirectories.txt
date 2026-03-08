@@ -1,3 +1,0 @@
-C:/Users/Badir/Documents/projects/untitled_bullshit/cmake-build-debug/CMakeFiles/untitled_bullshit.dir
-C:/Users/Badir/Documents/projects/untitled_bullshit/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Badir/Documents/projects/untitled_bullshit/cmake-build-debug/CMakeFiles/rebuild_cache.dir
