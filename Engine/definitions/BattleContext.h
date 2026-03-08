@@ -1,0 +1,14 @@
+//
+// Created by Badi on 3/3/2026.
+//
+
+#ifndef UNTITLED_BULLSHIT_BATTLECONTEXT_H
+#define UNTITLED_BULLSHIT_BATTLECONTEXT_H
+
+
+class BattleContext {
+
+};
+
+
+#endif //UNTITLED_BULLSHIT_BATTLECONTEXT_H
