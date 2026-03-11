@@ -7,48 +7,47 @@
 
 #include <vector>
 #include <string>
+#include <list>
+#include <queue>
 #include "../definitions/Entity.h"
+#include "../definitions/Action.h"
 
-struct TurnManager {
+class Ability;
+
+class TurnManager {
+private:
     std::vector<Entity*> combatants;
-
-    // Build turn order for one round
-    std::vector<Entity*> buildOrder() const {
-        std::vector<Entity*> order;
-        order.reserve(combatants.size());
-
-        for (auto* e : combatants) {
-            if (e && e->isEntityAlive()) order.push_back(e);
-        }
-
-        std::stable_sort(order.begin(), order.end(),
-                         [](Entity* a, Entity* b) {
-                             if (a->getSpeVal() != b->getSpeVal())
-                                 return a->getSpeVal() > b->getSpeVal();
-                             // tie-breaker: keep stable order (or compare names)
-                             return a->getName() < b->getName();
-                         });
-
-        return order;
+    std::vector<Action> pending_actions;
+    std::queue<Action> action_queue;
+    int next_tie_breaker = 0;
+public:
+    void addCombatant(Entity* combatant) {
+        combatants.push_back(combatant);
     }
 
-    // One full round
-    void runRound() {
-        auto order = buildOrder();
-
-        for (auto* actor : order) {
-            if (!actor->isEntityAlive()) continue;
-
-            actor->onTurnStart();
-
-            // Choose target and ability (hardcode for now)
-            // Example: actor uses ability 0 on first alive enemy
-            // actor->getAbility(0)->Execute(actor, target);
-
-            actor->onTurnEnd(); // ticks effects (and later cooldowns)
-        }
+    void queuePlannedAction(ActionType type, Entity* actor, Entity* target, Ability* ability, int priority) {
+        pending_actions.emplace_back(
+                type,
+                actor,
+                target,
+                ability,
+                priority,
+                actor->getSpeVal(),
+                next_tie_breaker++
+        );
     }
 
+    void buildExecutionQueue();
+
+    bool hasActions() const {
+        return !action_queue.empty();
+    }
+
+    Action popNextAction() {
+        Action next = action_queue.front();
+        action_queue.pop();
+        return next;
+    }
 };
 
 

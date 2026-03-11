@@ -11,24 +11,33 @@
 
 class Entity;
 
+// Ability.h
 class Ability {
 protected:
     std::string name;
     int cooldown = 0;
     int current_cooldown = 0;
-public:
-    virtual void Execute(Entity* caster, Entity* target) = 0;
-    void tickCooldown();
-    void startCooldown();
-    void resetCooldown();
 
+    virtual void doExecute(Entity* caster, Entity* target) = 0;
+
+public:
     virtual ~Ability() = default;
 
-    bool isReady() const;
+    void Execute(Entity* caster, Entity* target) {
+        if (!caster) return;
+        if (!isReady()) return;
+        doExecute(caster, target);
+        startCooldown();
+    }
+
+    void tickCooldown() { if (current_cooldown > 0) --current_cooldown; }
+    void startCooldown() { current_cooldown = cooldown; }
+    void resetCooldown() { current_cooldown = 0; }
+    bool isReady() const { return current_cooldown == 0; }
+
     const std::string& getName() const { return name; }
     int getCooldown() const { return cooldown; }
     int getCurrentCooldown() const { return current_cooldown; }
-
 };
 
 class BasicAttackAbility : public Ability {
@@ -37,7 +46,7 @@ public:
         this->name = std::move(name);
         this->cooldown = cooldown;
     };
-    void Execute(Entity* caster, Entity* target) override;
+    void doExecute(Entity* caster, Entity* target) override;
 };
 
 class Impulse1Ability : public Ability {
@@ -46,7 +55,7 @@ public:
         this->name = std::move(name);
         this->cooldown = cooldown;
     }
-    void Execute(Entity* caster, Entity* target) override;
+    void doExecute(Entity* caster, Entity* target) override;
 };
 
 

@@ -1,0 +1,33 @@
+- Start of Development: 03 / 05 / 2026
+- Game: [CORE]
+- Developer: PBStriker101
+
+- MAIN OBJECTIVE: Functional mock-up of a game that involves turn-based combat, map movement with minimal working UI elements, and character progression with options.
+- Complexity level: Minimal.
+- Development Cycle: As small as possible (2+ weeks)
+
+Current engines of interest:
+
+- TurnManager: In charge of handling action flow and queue of actions based on entities.
+- BattleContext: Unit that contains all the necessary information for combat to take place.
+- CharacterCreator: Unit in charge of creating entities.
+- MapManager: Unit in charge of handling map structure and connections.
+- JourneyHandler: Unit that handles player travel across the map system.
+
+Priority list:
+
+1) Create the Entity class and define the most essential player features.
+2) Prove that information can be obtained and changed on the Entity created.
+3) Define Abilities, the integral skills that each entity has.
+4) Verify and prove that Abilities are functional and can be used.
+5) Add Abilities to Entities and prove that Entities can be use and be affected by abilities.
+6) Define and create Effects, which must be able to alter the state of a character (defined by onTurnStart and onTurnEnd)
+7) Prove that effects can be applied by abilities to characters.
+8) Define and create Action, the basic unit of measure to define a player/enemy action with all the pertaining information for said action.
+9) Define and create the TurnManager, a system that will handle Actions in a queue and determine the flow of action of entities in a combat sequence.
+10) Implement an order system for the Actions the TurnManager is supposed to handle.
+10) Prove that the TurnManager can handle a queue of actions.
+11) Verify that TurnManager has the right permissions to alter the current combat state.
+12) . . .
+
+
