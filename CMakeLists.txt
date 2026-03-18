@@ -10,4 +10,5 @@ add_executable(untitled_bullshit main.cpp
         Engine/definitions/Effect.h
         Engine/managers/TurnManager.h
         Engine/definitions/Action.h
-        Engine/managers/TurnManager.cpp)
+        Engine/managers/TurnManager.cpp
+        Engine/definitions/BattleContext.h)

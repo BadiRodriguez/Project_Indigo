@@ -25,16 +25,8 @@ public:
         combatants.push_back(combatant);
     }
 
-    void queuePlannedAction(ActionType type, Entity* actor, Entity* target, Ability* ability, int priority) {
-        pending_actions.emplace_back(
-                type,
-                actor,
-                target,
-                ability,
-                priority,
-                actor->getSpeVal(),
-                next_tie_breaker++
-        );
+    void queuePlannedAction(Action action) {
+        pending_actions.emplace_back(action);
     }
 
     void buildExecutionQueue();

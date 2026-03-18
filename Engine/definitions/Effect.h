@@ -47,7 +47,17 @@ public:
     int modifySpeedVal(int current_value) const override {
         return current_value + speed_bonus;
     }
+};
 
+class GuardEffect : public Effect {
+public:
+    GuardEffect() {
+        duration = 1;
+    }
+
+    int modifyDefenseVal(int current_value) const override {
+        return current_value + (current_value / 4);
+    }
 };
 
 #endif //UNTITLED_BULLSHIT_EFFECT_H

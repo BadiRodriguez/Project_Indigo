@@ -11,19 +11,26 @@
 
 class Entity;
 
+enum class AbilityType {
+    Physical,
+    Magical,
+    Primordial
+};
+
 // Ability.h
 class Ability {
 protected:
     std::string name;
     int cooldown = 0;
     int current_cooldown = 0;
+    AbilityType abilityType;
 
     virtual void doExecute(Entity* caster, Entity* target) = 0;
 
 public:
     virtual ~Ability() = default;
 
-    void Execute(Entity* caster, Entity* target) {
+    void execute(Entity* caster, Entity* target) {
         if (!caster) return;
         if (!isReady()) return;
         doExecute(caster, target);
@@ -38,6 +45,7 @@ public:
     const std::string& getName() const { return name; }
     int getCooldown() const { return cooldown; }
     int getCurrentCooldown() const { return current_cooldown; }
+    AbilityType getAbilityType() const { return abilityType; }
 };
 
 class BasicAttackAbility : public Ability {

@@ -2,32 +2,288 @@
 - Game: [CORE]
 - Developer: PBStriker101
 
-- MAIN OBJECTIVE: Functional mock-up of a game that involves turn-based combat, map movement with minimal working UI elements, and character progression with options.
-- Complexity level: Minimal.
-- Development Cycle: As small as possible (2+ weeks)
+- MAIN OBJECTIVE:
+Build a small but functional game prototype with:
+1) turn-based combat,
+2) simple map movement,
+3) minimal UI feedback,
+4) basic character progression.
 
-Current engines of interest:
+- PROJECT SCOPE:
+Strict MVP. The goal is not flexibility or polish yet.
+The goal is one complete playable loop.
 
-- TurnManager: In charge of handling action flow and queue of actions based on entities.
-- BattleContext: Unit that contains all the necessary information for combat to take place.
-- CharacterCreator: Unit in charge of creating entities.
-- MapManager: Unit in charge of handling map structure and connections.
-- JourneyHandler: Unit that handles player travel across the map system.
+- SUCCESS CONDITION:
+The project counts as “working” when the player can:
+1) start the game,
+2) move through a small map,
+3) enter a battle,
+4) choose actions,
+5) finish the battle correctly,
+6) receive a progression reward or choice,
+7) continue or end the run without the game breaking.
 
-Priority list:
+- COMPLEXITY LEVEL:
+Minimal.
 
-1) Create the Entity class and define the most essential player features.
-2) Prove that information can be obtained and changed on the Entity created.
-3) Define Abilities, the integral skills that each entity has.
-4) Verify and prove that Abilities are functional and can be used.
-5) Add Abilities to Entities and prove that Entities can be use and be affected by abilities.
-6) Define and create Effects, which must be able to alter the state of a character (defined by onTurnStart and onTurnEnd)
-7) Prove that effects can be applied by abilities to characters.
-8) Define and create Action, the basic unit of measure to define a player/enemy action with all the pertaining information for said action.
-9) Define and create the TurnManager, a system that will handle Actions in a queue and determine the flow of action of entities in a combat sequence.
-10) Implement an order system for the Actions the TurnManager is supposed to handle.
-10) Prove that the TurnManager can handle a queue of actions.
-11) Verify that TurnManager has the right permissions to alter the current combat state.
-12) . . .
+- DEVELOPMENT CYCLE:
+As small as possible (2+ weeks)
+
+--------------------------------------------------
+CORE SYSTEMS
+--------------------------------------------------
+
+- Entity:
+Represents a combat unit with stats, health, abilities, and active effects.
+
+- Ability:
+Represents an action a unit can perform in combat.
+
+- Effect:
+Represents a temporary modifier or condition that changes entity state over time.
+
+- Action:
+Represents a concrete combat decision made by an entity for a turn.
+
+- TurnManager:
+Builds, orders, and executes actions during battle.
+
+- BattleContext:
+Stores all combat data needed to run a battle correctly.
+
+- MapManager:
+Stores a very small map and its node connections.
+
+- JourneyHandler:
+Handles player movement between map nodes and event triggering.
+
+- CharacterCreator:
+Creates player and enemy entities for testing and gameplay.
+
+--------------------------------------------------
+MVP MILESTONES
+--------------------------------------------------
+
+MILESTONE 1: ENTITY FOUNDATION
+Goal: Create a valid combat unit.
+
+1) Create the Entity class with the minimum required state:
+- name
+- hp / max hp
+- attack or damage-related stat
+- speed
+- alive/dead state
+- list of abilities
+- list of active effects
+
+2) Prove that Entity state can be:
+- read correctly
+- modified correctly
+- checked for alive/dead state
+
+Completion check:
+- Create at least 2 test entities. (COMPLETED)
+- Modify their stats and HP. (COMPLETED)
+- Confirm that death state is detected correctly. (COMPLETED)
+
+--------------------------------------------------
+
+MILESTONE 2: ABILITIES WORK
+Goal: Make entities perform meaningful actions.
+
+3) Define Ability with the minimum required information:
+- name
+- type or category
+- power or effect strength
+- cooldown or usage restriction if needed
+- valid target type
+
+4) Prove that Abilities are usable in isolation.
+
+5) Add Abilities to Entities and prove that:
+- entities can access their abilities
+- abilities can affect targets correctly
+- abilities can fail gracefully if invalid
+
+Completion check:
+- One entity can damage another using an ability. (COMPLETED)
+- One invalid action case is safely handled. (MISSING)
+
+--------------------------------------------------
+
+MILESTONE 3: EFFECTS WORK
+Goal: Add temporary state changes.
+
+6) Define Effect as a temporary modifier with:
+- name
+- duration
+- onTurnStart behavior if needed
+- onTurnEnd behavior if needed
+- stat modification or condition logic
+
+7) Prove that effects can be:
+- applied
+- updated over turns
+- removed when expired
+
+Completion check:
+- Apply one simple effect such as:
+  - speed buff,
+  - poison,
+  - defense reduction,
+  or similar. (COMPLETED)
+- Confirm that duration decreases correctly. (COMPLETED)
+- Confirm that expiration removes the effect. (COMPLETED)
+
+--------------------------------------------------
+
+MILESTONE 4: ACTIONS AND TURN ORDER
+Goal: Represent and resolve combat choices correctly.
+
+8) Define Action as the unit of combat intent with:
+- actor
+- target
+- selected ability or action type
+- priority
+- speed snapshot
+- tie breaker
+
+9) Define TurnManager responsibilities clearly:
+- collect actions
+- order them
+- transfer them into execution order
+- execute them safely
+
+10) Implement action ordering rules:
+- priority first
+- speed second
+- tie breaker third
+
+11) Prove that TurnManager can:
+- collect multiple actions
+- order them correctly
+- execute them in the correct sequence
+
+12) Verify that TurnManager can alter BattleContext safely.
+
+Completion check:
+- Run one test round with multiple entities.
+- Confirm the exact action order matches expectations.
+- Confirm that executed actions change combat state correctly.
+
+--------------------------------------------------
+
+MILESTONE 5: COMPLETE BATTLE LOOP
+Goal: Make one full battle playable from start to finish.
+
+13) Define BattleContext with the minimum required combat data:
+- allies
+- enemies
+- battle state
+- turn state
+- victory / defeat state
+
+14) Build the complete battle loop:
+- battle starts
+- entities choose actions
+- actions are ordered
+- actions execute
+- effects tick
+- dead units are removed from valid decision flow
+- victory or defeat is detected
+- battle ends cleanly
+
+Completion check:
+- A full battle can run from start to finish without manual fixes.
+- At least one side wins correctly.
+- No dead unit acts after death.
+
+--------------------------------------------------
+
+MILESTONE 6: MAP LOOP
+Goal: Connect battle to progression through space.
+
+15) Define a very small map structure:
+- 3 to 5 nodes maximum
+- simple connections
+- one start node
+- one battle node
+- one reward or end node
+
+16) Implement JourneyHandler to allow movement between connected nodes.
+
+17) Trigger at least one battle from map travel.
+
+Completion check:
+- Player can move through the map.
+- Entering the battle node starts combat.
+- Winning returns control safely.
+
+--------------------------------------------------
+
+MILESTONE 7: BASIC PROGRESSION
+Goal: Make victory lead to growth.
+
+18) Add one simple progression reward after battle:
+- gain HP
+- gain stat point
+- unlock one ability
+- choose one of two upgrades
+
+19) Prove that progression changes future battles.
+
+Completion check:
+- A post-battle reward is offered.
+- The next battle or state reflects the reward correctly.
+
+--------------------------------------------------
+
+MILESTONE 8: MINIMUM PLAYABLE VERSION
+Goal: Have something that can honestly be called a game.
+
+20) Build the smallest possible playable flow:
+- start
+- move
+- fight
+- win or lose
+- receive reward
+- continue or end
+
+21) Add minimal UI feedback:
+- text output is enough
+- player must be able to understand what happened
+
+22) Freeze scope.
+Do not add new systems until the full loop is stable.
+
+Completion check:
+- The game can be run and played from start to finish in one short session.
+
+--------------------------------------------------
+NON-GOALS FOR MVP
+--------------------------------------------------
+
+Do not prioritize these before the core loop works:
+- advanced AI
+- large map generation
+- multiple classes/races
+- inventory systems
+- save/load
+- complicated menus
+- animation polish
+- deep balancing
+- content variety
+- framework-level flexibility
+
+--------------------------------------------------
+PROGRESS CHECK RULE
+--------------------------------------------------
+
+A task only counts as finished if it is both:
+1) implemented
+and
+2) proven through a test or complete flow.
+
+If it exists in code but is not proven in the game loop, it is not done.
 
 
